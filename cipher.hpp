@@ -1,27 +1,20 @@
 #pragma once
 #include <string>
-#include <exception>
+#include "CipherExeptions.hpp"
 
 using namespace std;
 
-class CipherException :exception
-{
-public:
-	const char* what() const noexcept
-	{
-		return "Cipher error";
-	}
-};
-
 class Cipher
 {
-	int key;
+	Cipher(Cipher const&);
+	Cipher& operator=(Cipher const&);
+
+	int key_;
 	void CheckText(string& );
 	void NomalizeText(string& );
 	
 public:
-	explicit Cipher(int key);
-	~Cipher();
-	void Encrypt(string& inText);
-	void Decrypt(string& outText);
+	explicit Cipher(int );
+	void Encrypt(string& );
+	void Decrypt(string& );
 };

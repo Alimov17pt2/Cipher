@@ -1,13 +1,10 @@
-#include "Cipher.h"
+#include "Cipher.hpp"
 #include <cctype>
 #define ALPHABET_SZ 26
 
-Cipher::Cipher(int key) {
-	if (key <= 0) throw CipherException();
-	this->key = key % ALPHABET_SZ;
+Cipher::Cipher(int key):key_(key % ALPHABET_SZ) {
+	if (key_ <= 0) throw KeyException();
 }
-
-Cipher::~Cipher(){}
 
 void Cipher::NomalizeText(string& text)
 {
@@ -36,27 +33,27 @@ void Cipher::CheckText(string& text) {
 	for (unsigned i = 0; i < text.size(); i++)
 	{
 		if (!isupper((unsigned char)text[i])) 
-			throw CipherException();
+			throw TextException();
 	}
 }
 
 void Cipher::Encrypt(string& inText)
 {
-	if (inText.empty()) throw CipherException();
+	if (inText.empty()) return;
 	NomalizeText(inText);
 	CheckText(inText);
 	for (unsigned i = 0; i < inText.length(); i++)
 	{
-		inText[i] = (((inText[i]-'A') + key) % ALPHABET_SZ) + 'A';
+		inText[i] = (((inText[i]-'A') + key_) % ALPHABET_SZ) + 'A';
 	}
 }
 
 void Cipher::Decrypt(string & outText)
 {
-	if (outText.empty()) throw CipherException();
+	if (outText.empty()) return;
 	CheckText(outText);
 	for (unsigned i = 0; i < outText.size(); i++)
 	{
-		outText[i] = ((ALPHABET_SZ + (outText[i] - 'A') - key) % ALPHABET_SZ) + 'A';
+		outText[i] = ((ALPHABET_SZ + (outText[i] - 'A') - key_) % ALPHABET_SZ) + 'A';
 	}
 }
